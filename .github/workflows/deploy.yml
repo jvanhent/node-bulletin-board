@@ -1,6 +1,8 @@
 name: Deploy
 
 on:
+  repository_dispatch:
+    types: [deploy_after_build]
   workflow_dispatch:
     inputs:
       build_job_nr:
@@ -15,11 +17,21 @@ jobs:
   retag-docker-image:
     runs-on: ubuntu-latest
     steps:
-      - name: Search latest semver Image
+      - name: Manually Tag and Deploy
+        if: github.event_name == 'workflow_dispatch'
         uses: tinact/docker.image-retag@master
         with:
           image_name: jvanhent/node-bulletin-board
           image_old_tag: ${{ github.event.inputs.build_job_nr }}
           image_new_tag: "latest-${{ github.event.inputs.target_environment }} "
+          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Automatically Tag and Deploy
+        if: github.event_name == 'repository_dispatch'
+        uses: tinact/docker.image-retag@master
+        with:
+          image_name: jvanhent/node-bulletin-board
+          image_old_tag: ${{ github.event.client_payload.message.build_job_nr }}
+          image_new_tag: "latest-${{ github.event.client_payload.message.target_environment }} "
           registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
           registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
