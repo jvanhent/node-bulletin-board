@@ -53,6 +53,7 @@ jobs:
           build-args: |
             GITHUB_SHA=${{ github.sha }}
             GITHUB_REF=${{ github.ref }}
+            GITHUB_BUILD_NR=${{ github.run_number }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
