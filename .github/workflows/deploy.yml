@@ -20,6 +20,6 @@ jobs:
         with:
           image_name: jvanhent/node-bulletin-board
           image_old_tag: ${{ github.event.inputs.build_job_nr }}
-          image_new_tag: "${{}} "
+          image_new_tag: "latest-${{ github.event.inputs.target_environment }} "
           registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
           registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
