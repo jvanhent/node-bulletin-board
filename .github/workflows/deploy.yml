@@ -31,7 +31,7 @@ jobs:
         uses: tinact/docker.image-retag@master
         with:
           image_name: jvanhent/node-bulletin-board
-          image_old_tag: ${{ github.event.client_payload.message.build_job_nr }}
-          image_new_tag: "latest-${{ github.event.client_payload.message.target_environment }} "
+          image_old_tag: ${{ github.event.client_payload.build_job_nr }}
+          image_new_tag: "latest-${{ github.event.client_payload.target_environment }} "
           registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
           registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
