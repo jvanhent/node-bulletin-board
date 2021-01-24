@@ -67,7 +67,7 @@ jobs:
         uses: mvasigh/dispatch-action@main
         with:
           # You should create a personal access token and store it in your repository
-          token: ${{ secrets.DEPLOY_TOKEN }}  
+          token: ${{ secrets.GITHUB_TOKEN }}  
           event_type: deploy_after_build
           debug: true
           message: |
