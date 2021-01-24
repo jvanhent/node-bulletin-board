@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_job_nr:
+        description: 'Build job nr'
+        required: true
+      target_environment:
+        description: 'Target Environment'
+        required: true
+        default: 'DEV'
+
+jobs:
+  retag-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Search latest semver Image
+        uses: tinact/docker.image-retag@master
+        with:
+          image_name: jvanhent/node-bulletin-board
+          image_old_tag: ${{ github.event.inputs.build_job_nr }}
+          image_new_tag: "latest-${{ github.event.inputs.target_environment }} "
+          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
