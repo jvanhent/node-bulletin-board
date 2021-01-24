@@ -58,3 +58,16 @@ jobs:
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+  trigger-deploy:
+    needs: [build-docker-image]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy if on master
+        if: github.ref == 'refs/heads/master'
+        uses: mvasigh/dispatch-action@main
+        with:
+          # You should create a personal access token and store it in your repository
+          # token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}  
+          event_type: deploy_after_build
+    
