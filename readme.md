@@ -13,12 +13,15 @@ The output image is tagged with same build_number and pushed to docker repo.
 
 If the branch is 'master' it will automatically trigger deployment on DEV.
 
+## Prepare Build for Environment
+Retag image BUILD_NR with latest-ENV
+We have to foresee prepare build + deploy
+
 ## Pipeline - Deploy
-Automatic deployment to DEV after build will retag the docker image to 'latest-DEV' and deploy.
-Manual deployment is possible by providing build-nr and target-environment: this will retag docker image and deploy.
+Will deploy latest-ENV
 
 ## Improvements
-Add Tag to Git Repo when deploying: ex latest-DEV
+Add Tag to Git Repo when deploying: ex latest-DEV, or DEV-BUILD_NR
 This means we have to get revision from image.
 We can fetch labels as following
 1. `docker inspect -f {{.Config.Labels.GITHUB_BUILD_NR}} jvanhent/node-bulletin-board:latest-DEV`
